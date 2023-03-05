@@ -24,7 +24,9 @@ export const routes = [
     method: "GET",
     path: buildQueryParams("/tasks"),
     handler: (req, res) => {
-      const tasks = database.select();
+      const { search } = req.query;
+
+      const tasks = database.select({ search });
       res.writeHead(200).end(JSON.stringify(tasks));
     },
   },

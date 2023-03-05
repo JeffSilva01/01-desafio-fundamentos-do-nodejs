@@ -34,8 +34,20 @@ export class Database {
     return task;
   }
 
-  select() {
-    return this.#database;
+  select({ search }) {
+    if (!search) {
+      return this.#database;
+    }
+
+    decodeURI(search);
+
+    const tasks = this.#database.filter(
+      (task) =>
+        task.title.toLowerCase().includes(decodeURI(search.toLowerCase())) ||
+        task.description.toLowerCase().includes(decodeURI(search.toLowerCase()))
+    );
+
+    return tasks;
   }
 
   update({ id, data }) {
