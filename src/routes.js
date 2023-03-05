@@ -1,11 +1,23 @@
 import { buildQueryParams } from "./utils/build-query-params.js";
+import { Database } from "./database.js";
+
+const database = new Database();
 
 export const routes = [
   {
     method: "POST",
     path: buildQueryParams("/tasks"),
     handler: (req, res) => {
-      res.writeHead(200).end("POST | /tasks");
+      const { title, description } = req.body;
+      if (!title || !description) {
+        res
+          .writeHead(400)
+          .end("Os campos titulo e descrição são obrigatórios.");
+        return;
+      }
+
+      const task = database.insert({ title, description });
+      res.writeHead(200).end(JSON.stringify(task));
     },
   },
   {

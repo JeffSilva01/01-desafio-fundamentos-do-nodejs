@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { randomUUID } from "node:crypto";
 
 const databasePath = new URL("../db.json", import.meta.url);
 
@@ -17,9 +18,20 @@ export class Database {
     fs.writeFile(databasePath, JSON.stringify(this.#database));
   }
 
-  insert({ data }) {
-    this.#database.push(data);
+  insert({ title, description }) {
+    const task = {
+      id: randomUUID(),
+      title,
+      description,
+      created_at: new Date(),
+      updated_at: new Date(),
+      completed_at: null,
+    };
+
+    this.#database.push(task);
     this.#persist();
+
+    return task;
   }
 
   select() {
