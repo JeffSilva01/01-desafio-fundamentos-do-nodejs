@@ -32,7 +32,24 @@ export const routes = [
     method: "PUT",
     path: buildQueryParams("/tasks/:id"),
     handler: (req, res) => {
-      res.writeHead(200).end("PUT | /tasks/:id");
+      const { id } = req.params;
+      const { title, description } = req.body;
+
+      if (!title && !description) {
+        res
+          .writeHead(400)
+          .end(
+            "Você precisa enviar pelo menos um dos seguintes campos: 'titel' ou 'descrição'"
+          );
+        return;
+      }
+
+      try {
+        const task = database.update({ id, data: { title, description } });
+        res.writeHead(200).end(JSON.stringify(task));
+      } catch (error) {
+        res.writeHead(500).end(error.message);
+      }
     },
   },
   {
