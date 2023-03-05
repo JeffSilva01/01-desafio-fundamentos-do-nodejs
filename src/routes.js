@@ -70,7 +70,14 @@ export const routes = [
     method: "PATCH",
     path: buildQueryParams("/tasks/:id/complete"),
     handler: (req, res) => {
-      res.writeHead(200).end("PATCH | /tasks/:id/complete");
+      const { id } = req.params;
+
+      try {
+        const task = database.complete({ id });
+        res.writeHead(200).end(JSON.stringify(task));
+      } catch (error) {
+        res.writeHead(500).end(error.message);
+      }
     },
   },
 ];

@@ -72,4 +72,21 @@ export class Database {
 
     this.#persist();
   }
+
+  complete({ id }) {
+    const taskIndex = this.#database.findIndex((task) => task.id === id);
+
+    if (taskIndex <= -1) {
+      throw new Error("no task was found with that id");
+    }
+
+    this.#database[taskIndex] = {
+      ...this.#database[taskIndex],
+      completed_at: new Date(),
+    };
+
+    this.#persist();
+
+    return this.#database[taskIndex];
+  }
 }
