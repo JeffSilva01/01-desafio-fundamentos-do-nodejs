@@ -40,10 +40,6 @@ export class Database {
 
   update({ id, data }) {
     const { title, description } = data;
-    console.log(
-      "🚀 ~ file: database.js:43 ~ Database ~ update ~ { title, description }:",
-      { title, description }
-    );
 
     const taskIndex = this.#database.findIndex((task) => task.id === id);
 
@@ -68,7 +64,7 @@ export class Database {
   delete({ id }) {
     const taskIndex = this.#database.findIndex((task) => task.id === id);
 
-    if (taskIndex >= -1) {
+    if (taskIndex <= -1) {
       throw new Error("no task was found with that id");
     }
 

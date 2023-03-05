@@ -56,7 +56,14 @@ export const routes = [
     method: "DELETE",
     path: buildQueryParams("/tasks/:id"),
     handler: (req, res) => {
-      res.writeHead(200).end("DELETE | /tasks/:id");
+      const { id } = req.params;
+
+      try {
+        database.delete({ id });
+        res.writeHead(201).end();
+      } catch (error) {
+        res.writeHead(500).end(error.message);
+      }
     },
   },
   {
